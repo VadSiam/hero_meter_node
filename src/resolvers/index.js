@@ -40,7 +40,7 @@ export const resolversSchema = async () => {
         /* eslint-disable no-unused-vars */
         createPost: async (root, args, context, info) => {
           const res = await Posts.insert(args);
-          return prepare(await Posts.findOne({ _id: res.insertedIds[1] }));
+          return prepare(await Posts.findOne({ _id: res.insertedIds[0] }));
         },
         createComment: async (root, args) => {
           const res = await Comments.insert(args);
@@ -51,6 +51,7 @@ export const resolversSchema = async () => {
 
     return resolvers;
   } catch (e) {
+    /* eslint-disable no-console */
     console.log('Error while sending notification', e);
   }
 };

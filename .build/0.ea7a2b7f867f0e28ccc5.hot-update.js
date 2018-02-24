@@ -1,9 +1,19 @@
-import 'babel-core/register';
-import 'babel-polyfill';
-import { start } from './start';
+exports.id = 0;
+exports.modules = {
 
-start();
+/***/ "./src/index.js":
+/***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+__webpack_require__("babel-core/register");
+
+__webpack_require__("babel-polyfill");
+
+var _start = __webpack_require__("./src/start.js");
+
+(0, _start.start)();
 
 // import http from 'http';
 // import app from './server';
@@ -18,3 +28,7 @@ start();
 //     currentApp = app;
 //   });
 // }
+
+/***/ })
+
+};
