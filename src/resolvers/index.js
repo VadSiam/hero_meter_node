@@ -2,7 +2,6 @@ import { MongoClient, ObjectId } from 'mongodb';
 
 const MONGO_URL = 'mongodb://localhost:27017/blogddd';
 const prepare = (item) => {
-  console.log('item', item);
   item._id = item._id.toString();
   return item;
 };

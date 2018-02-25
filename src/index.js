@@ -2,9 +2,12 @@ import 'babel-core/register';
 import 'babel-polyfill';
 import { start } from './start';
 
-start();
 
-
+if (module.hot) {
+  module.hot.accept('./start', () => {
+    start();
+  });
+}
 // import http from 'http';
 // import app from './server';
 //

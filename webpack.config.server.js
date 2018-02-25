@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const webpack = require('webpack');
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
@@ -27,13 +29,12 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        /* eslint-disable quote-props */
         'BUILD_TARGET': JSON.stringify('server'),
       },
     }),
   ],
   output: {
-    path: path.join(__dirname, '.build'),
+    path: path.join(__dirname, 'build'),
     filename: 'server.js',
   },
 };

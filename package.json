@@ -4,10 +4,9 @@
   "description": "graphql-mongodb-server",
   "main": "dist/index.js",
   "scripts": {
-    "start:server": "rm -rf ./build && webpack --config webpack.config.server.js",
+    "go": "rm -rf ./build && webpack --config webpack.config.server.js",
     "start": "node dist/index.js",
     "build": "babel -d dist/ src/",
-    "go": "yarn build && yarn start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "@vadsiam",
