@@ -2,7 +2,6 @@ import { MongoClient, ObjectId } from 'mongodb';
 
 const MONGO_URL = 'mongodb://localhost:27017/blogddd';
 const prepare = (item) => {
-  console.log('work');
   item._id = item._id.toString();
   return item;
 };
@@ -15,17 +14,6 @@ export const resolversSchema = async () => {
     const Comments = db.collection('comments');
 
     const resolvers = {
-      Query: {
-        post: async (root, { _id }) => {
-          return prepare(await Posts.findOne(ObjectId(_id)));
-        },
-        posts: async () => {
-          return (await Posts.find({}).toArray()).map(prepare);
-        },
-        comment: async (root, { _id }) => {
-          return prepare(await Comments.findOne(ObjectId(_id)));
-        },
-      },
       Post: {
         comments: async ({ _id }) => {
           return (await Comments.find({ postId: _id }).toArray()).map(prepare);
@@ -36,6 +24,20 @@ export const resolversSchema = async () => {
           return prepare(await Posts.findOne(ObjectId(postId)));
         },
       },
+      Query: {
+        post: async (root, { _id }) => {
+          return prepare(await Posts.findOne(ObjectId(_id)));
+        },
+        posts: async () => {
+          return (await Posts.find({}).toArray()).map(prepare);
+        },
+        comments: async () => {
+          return (await Comments.find({}).toArray()).map(prepare);
+        },
+        comment: async (root, { _id }) => {
+          return prepare(await Comments.findOne(ObjectId(_id)));
+        },
+      },
       Mutation: {
         /* eslint-disable no-unused-vars */
         createPost: async (root, args, context, info) => {
@@ -44,7 +46,12 @@ export const resolversSchema = async () => {
         },
         createComment: async (root, args) => {
           const res = await Comments.insert(args);
-          return prepare(await Comments.findOne({ _id: res.insertedIds[1] }));
+          return prepare(await Comments.findOne({ _id: res.insertedIds[0] }));
+        },
+        deletePost: async (root, args) => {
+          const res = await Posts.deleteOne({ _id: ObjectId(args.postId) });
+          console.log('res', res.result);
+          return res;
         },
       },
     };

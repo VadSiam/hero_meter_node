@@ -16,12 +16,14 @@ export const typeDefs = [`
       type Query {
         post(_id: String): Post
         posts: [Post]
+        comments: [Comment]
         comment(_id: String): Comment
       }
 
       type Mutation {
         createPost(title: String, content: String): Post
         createComment(postId: String, content: String): Comment
+        deletePost(postId: String): Post
       }
 
       schema {
