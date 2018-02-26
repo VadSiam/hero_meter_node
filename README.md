@@ -4,7 +4,12 @@ Install:
 ```
   yarn
 ```
-Run server:
+Run to development:
 ```
-yarn go
+yarn watch
+```
+
+Get production:
+```
+yarn build && run start
 ```

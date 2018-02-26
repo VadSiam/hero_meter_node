@@ -1,23 +1,49 @@
 import 'babel-core/register';
 import 'babel-polyfill';
-import { start } from './start';
+import express from 'express';
+import bodyParser from 'body-parser';
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
+import { makeExecutableSchema } from 'graphql-tools';
+import cors from 'cors';
+
+import { typeDefs } from './type-defs';
+import { resolversSchema } from './resolvers';
+
+const URL = 'http://localhost';
+const PORT = 3001;
 
 
-if (module.hot) {
-  module.hot.accept('./start', () => {
-    start();
-  });
-}
-// import http from 'http';
-// import app from './server';
-//
-// const server = http.createServer(app);
-// let currentApp = app;
-// server.listen(3000);
-// if (module.hot) {
-//   module.hot.accept('./server', () => {
-//     server.removeListener('request', currentApp);
-//     server.on('request', app);
-//     currentApp = app;
-//   });
-// }
+const server = async () => {
+  try {
+    const resolvers = await resolversSchema();
+
+    const schema = makeExecutableSchema({
+      typeDefs,
+      resolvers,
+    });
+
+    const app = express();
+
+    app.use(cors());
+
+    app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
+
+    const homePath = '/graphiql';
+
+    app.use(homePath, graphiqlExpress({
+      endpointURL: '/graphql',
+    }));
+
+    app.listen(PORT, () => {
+      /* eslint-disable no-console */
+      console.log(`Visit ${URL}:${PORT}${homePath}`);
+    });
+  } catch (e) {
+    /* eslint-disable no-console */
+    console.log('errrrorrr->', e);
+  }
+};
+
+server();
+
+export default server;
